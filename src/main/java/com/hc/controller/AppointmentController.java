@@ -59,31 +59,43 @@ public class AppointmentController {
 		return principal.getName() + " Your Appointment created successfully , Required Nurse/Doctor Action !";
 	}
 	
-	
-	/*@PostMapping("/create/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public String createApmnt(@RequestBody Appointment apmnt, Principal principal,@PathVariable int id ){
+	@GetMapping("/getChildByParent/{id}")
+	public String getRecordByParent(int id) {
 		Optional<Patient> opt=repository.findById(id);
-		if(opt.isPresent()){
-			//get all child
+		if(opt.isPresent()) {
 			List<Appointment> child=opt.get().getAppointment();
-		  /*Patient patient=new Patient();
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
-			Date current = new Date();  
-			String time=current.toString();
-			apmnt.setStatus(AppointmentStatus.PENDING);
-			apmnt.setUserName(principal.getName());
-			apmnt.setRegTime(time);
-			//apmnt.setPatient(patient);
-			apmntRepository.save(apmnt);
-			return  "All childs(appointment) of a patient are added";
+			apmntRepository.findAll();
+			return child+"here is child data";
+		}else {
+			return "child not found:";
 		}
-		 else {
-			  return  principal.getName() +"Person not found";
-		  }
 	}
-	*/
-	@GetMapping("/get")
+	
+	
+//	@GetMapping("/createsss/{id}")
+//	@PreAuthorize("hasRole('ROLE_PATIENT')")
+//	public String createApmnt(@RequestBody Appointment apmnt, Principal principal,@PathVariable int id ){
+//		Optional<Patient> opt=repository.findById(id);
+//		if(opt.isPresent()){
+//			//get all child
+//			List<Appointment> child=opt.get().getAppointment();
+////		   Patient patient=new Patient();
+////			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+////			Date current = new Date();  
+////			String time=current.toString();
+////			apmnt.setStatus(AppointmentStatus.PENDING);
+////			apmnt.setUserName(principal.getName());
+////			apmnt.setRegTime(time);
+////			//apmnt.setPatient(patient);
+////			apmntRepository.save(apmnt);
+//			return child+ "All childs(appointment) of a patient are added";
+//		}
+//		 else {
+//			  return  principal.getName() +"Person not found";
+//		  }
+//	}
+//	
+	/*@GetMapping("/get")
 	public void getchild() {
 		List<Patient> list=repository.findAll();
 		   list.forEach(per->{

@@ -42,7 +42,7 @@ public class Appointment {
 	private String description;
 	@JsonIgnore
 	private String regTime;
-
+	@JsonIgnore
 	private String userName;
 	
 	private String email;
@@ -55,7 +55,7 @@ public class Appointment {
 	// @JoinColumn(name="user_id", referencedColumnName="user_id")
 	//private Patient patient;
 	
-	//@JsonIgnore
+	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
 
