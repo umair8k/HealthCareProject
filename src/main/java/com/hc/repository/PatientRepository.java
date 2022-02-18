@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.hc.entity.Patient;
+import com.hc.model.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient,Integer> {
     Optional<Patient> findByUserName(String username);

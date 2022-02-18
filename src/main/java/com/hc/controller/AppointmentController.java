@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hc.entity.Appointment;
-import com.hc.entity.AppointmentStatus;
-import com.hc.entity.EmailRequest;
-import com.hc.entity.Patient;
+import com.hc.model.Appointment;
+import com.hc.model.AppointmentStatus;
+import com.hc.model.EmailRequest;
+import com.hc.model.Patient;
 import com.hc.repository.AppointmentRepository;
 import com.hc.repository.PatientRepository;
 import com.hc.service.EmailService;
@@ -53,9 +53,9 @@ public class AppointmentController {
 		//patient.setId();
 		apmntRepository.save(apmnt);
 		request.setSubject("Your Appointment is Creates successfully");
-		request.setMessage("Your Appointment created successfully , Required Nurse/Doctor Action !");
+		request.setBody("Your Appointment created successfully , Required Nurse/Doctor Action !");
 		request.setTo(apmnt.getEmail());
-		emailService.sendEmail(request.getSubject(), request.getMessage(), request.getTo());
+		emailService.sendEmail(request.getSubject(), request.getBody(), request.getTo());
 		return principal.getName() + " Your Appointment created successfully , Required Nurse/Doctor Action !";
 	}
 	
@@ -177,9 +177,14 @@ public class AppointmentController {
 	@GetMapping("/rejectAppointment/{appointId}")
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 	public String removeAppointment(@PathVariable int appointId) {
+		EmailRequest request =new EmailRequest();
 		Appointment apmnt = apmntRepository.findById(appointId).get();
 		apmnt.setStatus(AppointmentStatus.REJECTED);
 		apmntRepository.save(apmnt);
+		request.setSubject("Your Appointment Rejected");
+		request.setBody("Your Appointment rejected due to unavoidable circumtances. Inconvenience coused is deeply regretted.XYZ, Please try take take on other date!");
+		request.setTo(apmnt.getEmail());
+		emailService.sendEmail(request.getSubject(), request.getBody(), request.getTo());
 		return "Appointment Rejected !!";
 	}
 

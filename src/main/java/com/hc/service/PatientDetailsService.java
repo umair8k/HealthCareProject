@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.hc.entity.Patient;
+import com.hc.model.Patient;
 import com.hc.repository.PatientRepository;
 
 @Service

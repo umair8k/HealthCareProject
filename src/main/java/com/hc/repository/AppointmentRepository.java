@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.hc.entity.Appointment;
+import com.hc.model.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment,Integer> {
 

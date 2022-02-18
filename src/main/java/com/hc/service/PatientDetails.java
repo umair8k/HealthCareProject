@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hc.entity.Patient;
+import com.hc.model.Patient;
 
 public class PatientDetails implements UserDetails {
 

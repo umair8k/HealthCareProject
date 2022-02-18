@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hc.common.PatientConstant;
-import com.hc.entity.Appointment;
-import com.hc.entity.AppointmentStatus;
-import com.hc.entity.Patient;
-import com.hc.entity.SignUpRequest;
+import com.hc.model.Appointment;
+import com.hc.model.AppointmentStatus;
+import com.hc.model.Patient;
+import com.hc.model.SignUpRequest;
 import com.hc.repository.AppointmentRepository;
 import com.hc.repository.PatientRepository;
 import com.hc.service.EmailService;

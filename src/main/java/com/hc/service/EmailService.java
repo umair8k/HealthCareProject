@@ -23,7 +23,7 @@ public class EmailService {
     {
         boolean flag = false; 
         String senderEmail = "umair8k@gmail.com"; 
-        String senderPassword = ""; // your gmail id password
+        String senderPassword = "newgmail"; // your gmail id password
 
         
         Properties properties = new Properties();
@@ -74,7 +74,7 @@ public class EmailService {
         boolean flag = false; 
 
         String senderEmail = "umair8k@gmail.com"; 
-        String senderPassword = ""; // your gmail id password
+        String senderPassword = "newgmail"; // your gmail id password
 
         
         Properties properties = new Properties();

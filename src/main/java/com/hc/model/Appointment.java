@@ -1,4 +1,4 @@
-package com.hc.entity;
+package com.hc.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
