@@ -29,7 +29,7 @@ import com.hc.model.Patient;
 import com.hc.model.SignUpRequest;
 import com.hc.repository.AppointmentRepository;
 import com.hc.repository.PatientRepository;
-import com.hc.service.EmailService;
+import com.hc.service.IEmailService;
 
 @RestController
 @RequestMapping("/patient")
@@ -39,9 +39,9 @@ public class PatientController {
 	private PatientRepository repository;
 	@Autowired
 	private AppointmentRepository apmntRepository;
-	
+
 	@Autowired
-	private EmailService emailService;
+	private IEmailService emailService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -64,21 +64,7 @@ public class PatientController {
 		repository.save(patient);
 		return "Hi " + signUpRequest.getUserName() + " welcome! Your Appointment created successfully , Required Nurse/Doctor Action !";
 	}
-	@PutMapping("/createAppointment")
-	public String createAppointment(@RequestBody Appointment apmnt,Principal principal) {
-		Patient patient=new Patient();
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-		Date current = new Date();  
-		String time=current.toString();
-		//repository.findByUserName(patient.getId());
-		apmnt.setStatus(AppointmentStatus.PENDING);
-		apmnt.setUserName(principal.getName());
-		apmnt.setRegTime(time);
-		//apmnt.setPatient(patient);
-		apmntRepository.save(apmnt);
-		//apmntRepository.save(apmnt);
-		return principal.getName() + " Your Appointment created successfully , Required Nurse/Doctor Action !";
-	}
+
 
 	@GetMapping("/access/{userId}/{patientRole}")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -104,20 +90,21 @@ public class PatientController {
 	@GetMapping("/test")
 	@PreAuthorize("hasAuthority('ROLE_PATIENT')")
 	public String test() {
-	
+
 		return "User can acces this url ";
-			
+
 	}
-	
-	@GetMapping("/getStatus/{userName}")
-@PreAuthorize("authentication.principal.equals(#userName) ")
-	private ResponseEntity<Optional<Patient>> getLoggedInUserDetails(@RequestBody(required=false) Patient patient ,@PathVariable String userName) {
-		Optional<Patient> patient1 =repository.findByUserName(userName);
-		if(patient1==null)
-			return ResponseEntity.notFound().build();
-		else
-			return ResponseEntity.ok(patient1);
-	}
+
+	/*
+	   @GetMapping("/getStatus/{userName}")
+
+	   @PreAuthorize("authentication.principal.equals(#userName) ") private
+	   ResponseEntity<Optional<Patient>>
+	   getLoggedInUserDetails(@RequestBody(required=false) Patient patient
+	   ,@PathVariable String userName) { Optional<Patient> patient1
+	   =repository.findByUserName(userName); if(patient1==null) return
+	   ResponseEntity.notFound().build(); else return ResponseEntity.ok(patient1); }
+	 */
 
 	private List<String> getRolesByLoggedInUser(Principal principal) {
 		String roles = getLoggedInUser(principal).getRoles();
@@ -138,6 +125,6 @@ public class PatientController {
 	private Patient getLoggedInUser(Principal principal) {
 		return repository.findByUserName(principal.getName()).get();
 	}
-	
-	
+
+
 }

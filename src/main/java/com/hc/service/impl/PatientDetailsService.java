@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import java.util.Optional;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hc.model.Patient;
 import com.hc.repository.PatientRepository;
+import com.hc.service.impl.PatientDetails;
 
 @Service
 public class PatientDetailsService implements UserDetailsService {
@@ -23,9 +24,4 @@ public class PatientDetailsService implements UserDetailsService {
 		return patient.map(PatientDetails::new)
 				.orElseThrow(() -> new UsernameNotFoundException(username + " Not Found"));
 	}
-//	  public boolean canAccessUser(Appointment appointment, String userName) {
-//	      //  LOGGER.debug("Checking if user={} has access to user={}", currentUser, userId);
-//	        return appointment != null
-//	                && ( appointment.getUserName().equals(userName));
-//	}
 }

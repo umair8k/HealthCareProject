@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import java.io.File;
 import java.util.Properties;
@@ -16,14 +16,16 @@ import javax.mail.internet.MimeMultipart;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-@Service
-public class EmailService {
+import com.hc.service.IEmailService;
 
+@Service
+public class EmailServiceImpl implements IEmailService{
+    @Override
     public boolean sendEmail(String subject, String message, String to)
     {
         boolean flag = false; 
-        String senderEmail = "umair8k@gmail.com"; 
-        String senderPassword = "newgmail"; // your gmail id password
+        String senderEmail = "umair8k@gmail.com"; //Your Email/ sender email id
+        String senderPassword = ""; // your gmail id password
 
         
         Properties properties = new Properties();
@@ -69,12 +71,13 @@ public class EmailService {
     }
     //---------------------------------------------------------------------------------------------------------------------
 
+    @Override
     public boolean sendEmailInlineImage(String subject, String message, String to)
     {
         boolean flag = false; 
 
-        String senderEmail = "umair8k@gmail.com"; 
-        String senderPassword = "newgmail"; // your gmail id password
+        String senderEmail = "umair8k@gmail.com"; //Your Email/ Sender email id 
+        String senderPassword = ""; // your gmail id password
 
         
         Properties properties = new Properties();

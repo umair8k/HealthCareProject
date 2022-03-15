@@ -26,29 +26,25 @@ import lombok.Setter;
 @Table(name = "USER_AUTHENTICATION_TBL")
 public class Patient implements Serializable {
 
-    @Id
-    @GeneratedValue
-    @Column(name="user_id")
-    private int id;
-    private String userName;
-    private String password;
-    private boolean active;
-    private String roles;//ROLE_PATIENT,ROLE_NURSE
-    
-   /*@OneToMany(mappedBy="patient")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="patient", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties("book")
-    @JoinColumn(name="user_id",referencedColumnName="user_id")*/
-    @OneToMany(fetch = FetchType.EAGER, targetEntity=Appointment.class, cascade = CascadeType.ALL)
-	@JoinColumn(name="user__fk", referencedColumnName="user_id")
-    private List<Appointment> appointment;
+	@Id
+	@GeneratedValue
+	@Column(name="user_id")
+	private int id;
+	private String userName;
+	private String password;
+	private boolean active;
+	private String roles;//ROLE_PATIENT,ROLE_NURSE
 
-    
+	@OneToMany(fetch = FetchType.EAGER, targetEntity=Appointment.class, cascade = CascadeType.ALL)
+	@JoinColumn(name="user__fk", referencedColumnName="user_id")
+	private List<Appointment> appointment;
+
+
 	@Override
 	public String toString() {
 		return "Patient (Parent)[id=" + id + ", userName=" + userName + ", password=" + password + ", active=" + active
 				+ ", roles=" + roles + "]";
 	}
-    
-    
+
+
 }

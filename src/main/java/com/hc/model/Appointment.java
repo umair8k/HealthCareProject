@@ -29,32 +29,32 @@ import lombok.Setter;
 public class Appointment {
 
 
-	
+
 	@Id
 	@GeneratedValue
 	@JsonIgnore
 	private int appointmentId;
-	
+
 	private String disease;
-	
+
 	private String Gender;
-	
+
 	private String description;
 	@JsonIgnore
 	private String regTime;
 	@JsonIgnore
 	private String userName;
-	
+
 	private String email;
-	
+
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm")
 	private String appointmentDateAndTime;
-	
+
 	//@ManyToOne(cascade=CascadeType.ALL)
 	// @ManyToOne(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
 	// @JoinColumn(name="user_id", referencedColumnName="user_id")
 	//private Patient patient;
-	
+
 	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
@@ -67,7 +67,7 @@ public class Appointment {
 	}
 
 
-	
-	
-	
+
+
+
 }

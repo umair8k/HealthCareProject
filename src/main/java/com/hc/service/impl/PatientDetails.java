@@ -1,4 +1,4 @@
-package com.hc.service;
+package com.hc.service.impl;
 
 import java.util.Arrays;
 import java.util.Collection;

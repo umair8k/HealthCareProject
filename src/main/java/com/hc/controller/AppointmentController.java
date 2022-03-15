@@ -23,148 +23,49 @@ import com.hc.model.EmailRequest;
 import com.hc.model.Patient;
 import com.hc.repository.AppointmentRepository;
 import com.hc.repository.PatientRepository;
-import com.hc.service.EmailService;
+import com.hc.service.IEmailService;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
 @RequestMapping("/post")
+@Slf4j
 public class AppointmentController {
-	
+
 	@Autowired
 	private AppointmentRepository apmntRepository;
 	@Autowired
 	private PatientRepository repository;
 	@Autowired
-	private EmailService emailService;
+	private IEmailService emailService;
+
 	
-	@PostMapping("/create/{id}")
-	@PreAuthorize("hasRole('ROLE_PATIENT')")
-	public String createApmnt(@RequestBody Appointment apmnt, Principal principal,@PathVariable Integer id){
-		Patient patient=new Patient();
+	/*-------@PreAuthorize------- 
+	  Using this annotation iam authorising apis 
+	*/
+	@PostMapping("/create")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")// here if logged in user has patient role only he can acces this api api 
+	public String bookApmnt(@RequestBody Appointment apmnt, Principal principal){
+		log.debug("execution start{}", new Date());
 		EmailRequest request =new EmailRequest();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-		repository.findById(id);
+		//repository.findById(id);
 		Date current = new Date();  
 		String time=current.toString();
 		apmnt.setStatus(AppointmentStatus.PENDING);
 		apmnt.setUserName(principal.getName());
 		apmnt.setRegTime(time);
-		//apmnt.setPatient(patient);
-		//patient.setId();
 		apmntRepository.save(apmnt);
 		request.setSubject("Your Appointment is Creates successfully");
 		request.setBody("Your Appointment created successfully , Required Nurse/Doctor Action !");
 		request.setTo(apmnt.getEmail());
 		emailService.sendEmail(request.getSubject(), request.getBody(), request.getTo());
+		log.debug("execution end{}", new Date());
 		return principal.getName() + " Your Appointment created successfully , Required Nurse/Doctor Action !";
 	}
-	
-	@GetMapping("/getChildByParent/{id}")
-	public String getRecordByParent(int id) {
-		Optional<Patient> opt=repository.findById(id);
-		if(opt.isPresent()) {
-			List<Appointment> child=opt.get().getAppointment();
-			apmntRepository.findAll();
-			return child+"here is child data";
-		}else {
-			return "child not found:";
-		}
-	}
-	
-	
-//	@GetMapping("/createsss/{id}")
-//	@PreAuthorize("hasRole('ROLE_PATIENT')")
-//	public String createApmnt(@RequestBody Appointment apmnt, Principal principal,@PathVariable int id ){
-//		Optional<Patient> opt=repository.findById(id);
-//		if(opt.isPresent()){
-//			//get all child
-//			List<Appointment> child=opt.get().getAppointment();
-////		   Patient patient=new Patient();
-////			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
-////			Date current = new Date();  
-////			String time=current.toString();
-////			apmnt.setStatus(AppointmentStatus.PENDING);
-////			apmnt.setUserName(principal.getName());
-////			apmnt.setRegTime(time);
-////			//apmnt.setPatient(patient);
-////			apmntRepository.save(apmnt);
-//			return child+ "All childs(appointment) of a patient are added";
-//		}
-//		 else {
-//			  return  principal.getName() +"Person not found";
-//		  }
-//	}
-//	
-	/*@GetMapping("/get")
-	public void getchild() {
-		List<Patient> list=repository.findAll();
-		   list.forEach(per->{
-		    	
-		    	 //get childs of each parent
-		    	 List<Appointment>  childs=per.getAppointment();
-		    	 childs.forEach(ph->{
-		  
-		    	 });
-		     });
-	}
-	
 
-	@GetMapping("/approveAppointment/{appointId}")
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	public String approveApoint(@PathVariable int appointId) {
-		Appointment apmnt = apmntRepository.findById(appointId).get();
-		apmnt.setStatus(AppointmentStatus.APPROVED);
-		apmntRepository.save(apmnt);
-		return "Appointment Approved !!";
-	}
-	@PostMapping("/getChild/{id}")
-	public String getChild(int id, Principal principal,Appointment apmnt) {
-		//loading parent
-		Optional<Patient> opt=repository.findById(id);
-		if(opt.isPresent()){
-			//get all child
-			List<Appointment> child=opt.get().getAppointment();
-			Patient patient=new Patient();
-			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-			repository.findById(id);
-			Date current = new Date();  
-			String time=current.toString();
-			apmnt.setStatus(AppointmentStatus.PENDING);
-		//	apmnt.setUserName(principal.getName());
-			apmnt.setRegTime(time);
-			//apmnt.setPatient(patient);
-			apmntRepository.findAll();
-			return child+"all child";
-		} 
-		
-		else {
-			  return  "Person not found";
-		}
-	}
-
-/*	@GetMapping("/getStatus/{userName}")
-	//@PreAuthorize("principal.userName")
-@PreAuthorize("authentication.principal.equals(#userName) ")
-	//@PreAuthorize("hasRole('ROLE_PATIENT') and authentication.principal.getName(#userName)")
-	
-	public List<Appointment> loadUserByUsername(@RequestBody  String userName){
-		List<Appointment> patient =apmntRepository.findByUserName(userName);
-		Appointment apmnt=new Appointment();
-	
-		return patient;
-	
-			
-	}*/
-	
-	
-//	@RequestMapping(value = "/userName", method = RequestMethod.GET)
-//    @ResponseBody
-//    public List<Appointment> currentUserName(Principal principal) {
-//		List<Appointment> patient =principal.getName()
-//        return patient;
-//    }
-
-	@GetMapping("/approveAll")
+/*	@GetMapping("/approveAll")
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 	public String approveAll() {
 		apmntRepository.findAll().stream().filter(appointment -> appointment.getStatus().equals(AppointmentStatus.PENDING)).forEach(appointment -> {
@@ -172,7 +73,7 @@ public class AppointmentController {
 			apmntRepository.save(appointment);
 		});
 		return "Approved all Appointments !";
-	}
+	}*/
 
 	@GetMapping("/rejectAppointment/{appointId}")
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
@@ -193,7 +94,7 @@ public class AppointmentController {
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 	public String rejectAll() {
 		apmntRepository.findAll().stream().filter(appointment -> appointment.getStatus().equals(AppointmentStatus.PENDING)).forEach(appointment -> {
-			appointment.setStatus(AppointmentStatus.REJECTED);
+			appointment.setStatus(AppointmentStatus.REJECTED); //Stream api for filtering collection data 
 			apmntRepository.save(appointment);
 		});
 		return "Rejected all appointments !";
@@ -202,7 +103,7 @@ public class AppointmentController {
 	@GetMapping("/viewAll")
 	@PreAuthorize("hasAuthority('ROLE_NURSE') or hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	public  List<Appointment> viewAll(){
-		return apmntRepository.findAll();
+		return apmntRepository.findAll(); //here iam  not using stream fillter bcz here we dont need to filter, here i am displaying all data 
 	}
 
 	@GetMapping("/viewApproved")
@@ -210,7 +111,8 @@ public class AppointmentController {
 	public  List<Appointment> viewApproved(){
 		return apmntRepository.findAll().stream()
 				.filter(appointment -> appointment.getStatus().equals(AppointmentStatus.APPROVED))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()); //Stream api for filtering collection data 
+	
 	}
 
 	@GetMapping("/viewRejected")
@@ -218,17 +120,17 @@ public class AppointmentController {
 	public  List<Appointment> viewRejected(){
 		return apmntRepository.findAll().stream()
 				.filter(appointment -> appointment.getStatus().equals(AppointmentStatus.REJECTED))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()); //Stream api for filtering collection data 
 	}
 	@GetMapping("/viewPending")
 	@PreAuthorize("hasAuthority('ROLE_NURSE') or hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	public  List<Appointment> viewPending(){
 		return apmntRepository.findAll().stream()
 				.filter(appointment -> appointment.getStatus().equals(AppointmentStatus.PENDING))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()); //Stream api for filtering collection data 
 	}
 	@GetMapping("/getById/{user_id}")
-//	@PreAuthorize("hasAuthority('ROLE_NURSE') or hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_NURSE') or hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	public  String getById(Integer id){
 		Appointment apmnt=new Appointment();
 		Patient patient=repository.findById(id).get();
@@ -236,6 +138,6 @@ public class AppointmentController {
 				.filter(appointment -> appointment.getStatus().equals(AppointmentStatus.PENDING))
 				.collect(Collectors.toList());*/
 	}
-	
+
 
 }

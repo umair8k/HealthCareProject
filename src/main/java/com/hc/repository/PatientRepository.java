@@ -8,6 +8,4 @@ import com.hc.model.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient,Integer> {
     Optional<Patient> findByUserName(String username);
-   // Appointment findByUserName(String userName);
-	//Appointment findByPatientName(String userName);
 }
