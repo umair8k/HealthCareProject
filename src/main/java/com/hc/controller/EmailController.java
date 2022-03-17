@@ -53,6 +53,8 @@ public class EmailController {
 
 			return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("inline image email sending fail");
 		}
+		
+		
 	}
 
 }
