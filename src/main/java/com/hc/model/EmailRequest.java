@@ -17,13 +17,22 @@ public class EmailRequest {
 	@Email
 	@NotNull
 	private String to;
+	
 	@NotNull
 	private String subject;
+	
 	@NotNull
 	private String body;
+	
 	@NotNull
 	private LocalDateTime dateTime;
+	
 	@NotNull
 	private ZoneId timeZone;
+	
+	//fgjf
+	//jgggggggggsd
+	//mjfkgjlksdjglk 
+	//fdkgjlksdjfglk
 
 }
